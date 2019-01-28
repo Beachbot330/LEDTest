@@ -104,15 +104,27 @@ public class Frills extends Subsystem {
     }
 
     public void setColor(Color color){
+        r.disablePWM();
+        g.disablePWM();
+        b.disablePWM();
+        r.setPWMRate(500);
+        g.setPWMRate(500);
+        b.setPWMRate(500);
         r.enablePWM(color.getRed()/255);
         g.enablePWM(color.getGreen()/255);
         b.enablePWM(color.getBlue()/255);
     }
 
     public void setColorRGB(int red, int green, int blue){
-        r.enablePWM(red/255);
-        g.enablePWM(green/255);
-        b.enablePWM(blue/255);
+        r.disablePWM();
+        g.disablePWM();
+        b.disablePWM();
+        r.setPWMRate(500);
+        g.setPWMRate(500);
+        b.setPWMRate(500);
+        r.enablePWM(red/255.0);
+        g.enablePWM(green/255.0);
+        b.enablePWM(blue/255.0);
     }
 
     Color RED = new Color(255, 0, 0);
