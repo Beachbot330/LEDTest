@@ -11,9 +11,12 @@
 
 package org.usfirst.frc330.subsystems;
 
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.usfirst.frc330.commands.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -122,15 +125,59 @@ public class Frills extends Subsystem {
         r.setPWMRate(500);
         g.setPWMRate(500);
         b.setPWMRate(500);
-        r.enablePWM(red/255.0);
-        g.enablePWM(green/255.0);
-        b.enablePWM(blue/255.0);
+        r.enablePWM((red/5)/255.0);
+        g.enablePWM((green/5)/255.0);
+        b.enablePWM((blue/5)/255.0);
+    }
+
+    
+
+    int Pred = 0;
+    int Pgreen = 55;
+    int Pblue = 174;
+    int i = 0;
+
+    public void fadeLoop() {
+        
+
+        
+        
+
+        Timer timer = new Timer(); 
+        timer.scheduleAtFixedRate(new TimerTask() 
+        { 
+            public void run() 
+            { 
+                r.disablePWM();
+                g.disablePWM();
+                b.disablePWM();
+                r.setPWMRate(500);
+                g.setPWMRate(500);
+                b.setPWMRate(500);
+                r.enablePWM((Pred/5)/255.0);
+                g.enablePWM((Pgreen/5)/255.0);
+                b.enablePWM((Pblue/5)/255.0);
+                Pred++;
+                Pgreen++;
+                Pblue++;
+                if(Pred > 255) Pred = 0;
+                if(Pgreen > 255) Pgreen = 0;
+                if(Pblue > 255) Pblue = 0;
+                SmartDashboard.putNumber("green", Pgreen);
+                SmartDashboard.putNumber("red", Pred);
+                SmartDashboard.putNumber("blue", Pblue);
+                
+                i++;
+                System.out.println(i);
+            } 
+            
+        }, 0, 1500); 
     }
 
     Color RED = new Color(255, 0, 0);
     Color GREEN = new Color(0, 255, 0);
     Color BLUE = new Color(0, 0, 255);
-    Color YELLOW = new Color(255, 255, 0);
+    Color YELLOW = new Color(115, 80, 0); //also 255, 255, 0
     Color PURPLE = new Color(127, 0, 255);
 
     public boolean getIsVisionTargetInSight() {
